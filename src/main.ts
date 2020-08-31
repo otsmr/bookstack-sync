@@ -1,99 +1,43 @@
-import { execSync } from "child_process";
+import { app } from "electron"
+import AutoLaunch from "auto-launch"
 
-import * as path from "path";
-import { existsSync, mkdirSync, readFileSync } from "fs";
-import moment from "moment";
-import mysql from "mysql2/promise";
-
-
-let config: any = {};
-
-try {
-
-    config = JSON.parse(readFileSync("../config.json").toString());
-
-} catch (error) {
-
-    console.log(error.toString());
-    process.exit(1);
-    
-}
+import syncdb from "./database"
+import { initTrayIcon, updateTrayIcon } from "./electron"
+import config from "./config"
 
 
-async function loadMetaData (auth) {
 
-    const connection = await mysql.createConnection({
-        ...auth,
-        database: "information_schema"
+initTrayIcon();
+
+const exe = app.getPath("exe");
+if (!exe.endsWith("electron.exe")) {
+
+    const autolaunch = new AutoLaunch({
+        name: 'BookStack-Sync',
+        path: exe,
     });
 
-    const [ rows ] = await connection.execute("SELECT `TABLE_NAME`, `TABLE_ROWS`, `CREATE_TIME`, `UPDATE_TIME` FROM `TABLES` WHERE `TABLE_SCHEMA` = ?", [auth.database]);
-
-    return rows
-
-}
-
-function createBackup (auth: { host: string; user: string; password: string; port: string; database: string; }) {
-
-    const backupFolder = path.join(config.backuppath, moment().format("YYYY"), moment().format("MM"), moment().format("DD"));
-    mkdirSync(backupFolder, { recursive: true })
-
-    const backupFilePath = path.join(backupFolder, moment().format("HH.mm.ss") +  ` - datenbank ${auth.host}.sql`);
-
-    console.log(backupFilePath);
-
-    try {
-
-        execSync(`mysqldump -u${auth.user} -p${auth.password} -P ${auth.port} -h ${auth.host} ${auth.database} > "${backupFilePath}"`).toString();
-        
-    } catch (error) {
-        console.log(error.toString());
-        return null;
-    }
-
-
-    return backupFilePath;
+    if (config.get("autoStart")) autolaunch.enable();
+    else autolaunch.disable();
 
 }
 
-function updateDatabase (auth, restoreFile) {
+// -------------------------------------
+// Syncronisation wird gestartet
 
-    if (!existsSync(restoreFile)) return false;
+syncdb((status) => {
+    updateTrayIcon(status);
+});
 
-    if (!createBackup(auth)) {
-        return false;
-    };
+setInterval(() => {
 
-    // const mysql_output = execSync(`mysql -u${auth.user} -p${auth.password} -P ${auth.port} -h ${auth.host} ${auth.database} < mysqldump.backup2.sql`).toString();
+    console.log("CHECK");
 
-}
-
-(async ()=>{
-
-
-    try {
-
-        const server = config.authMysqlServer;
-        const client = config.authMysqlClient;
+    syncdb((status) => {
+        updateTrayIcon(status);
+    });
     
-    
-        // createBackup(client);
-        await loadMetaData(client);
-    
-    
-        
-    } catch (error) {
-    
-        console.log(error.toString());
-        // console.warn("Das folgende Packet muss installiert sein: sudo apt install mariadb-client-10.3");
-        process.exit(1);
-        
-    }
-
-
-
-})()
-
+}, config.get("syncIntervallInMinutes") * 1000 * 60);
 
 
 

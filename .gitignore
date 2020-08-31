@@ -1,6 +1,7 @@
 node_modules/
-build/
+build/**/*.js
+build/**/*.map
+build/data/**
+dist/
 data/
 package-lock.json
-
-config.json

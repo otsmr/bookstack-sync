@@ -1,0 +1,55 @@
+{
+    "authFtpServer": {
+        "user": "",
+        "pass": "",
+        "host": "",
+        "port": ""
+    },
+    "authMysqlServer": {
+        "user": "",
+        "pass": "",
+        "host": "",
+        "port": "",
+        "database": ""
+    },
+    "syncIntervallInMinutes": 5,
+    "localPath": "",
+    "backupPath": "data/backup/",
+    "authMysqlClient": {
+        "user": "root",
+        "pass": "root",
+        "host": "localhost",
+        "port": "3306",
+        "database": "bookstack"
+    },
+    "checktables": {
+        "bytime": [
+            "activities",
+            "users",
+            "api_tokens",
+            "attachments",
+            "books",
+            "bookshelves",
+            "chapters",
+            "comments",
+            "email_confirmations",
+            "images",
+            "pages",
+            "page_revisions",
+            "roles",
+            "role_permissions",
+            "settings",
+            "social_accounts",
+            "tags",
+            "user_invites",
+            "views"
+        ],
+        "askbycountchanged": [
+            "api_tokens",
+            "roles",
+            "users",
+            "user_invites"
+        ]
+    },
+    "autoStart": true
+}

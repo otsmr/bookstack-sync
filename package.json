@@ -1,31 +1,83 @@
 {
   "name": "bookstack-sync",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "BookStack-Synchronisierung für Offline-Unterstützung",
   "main": "build/main.js",
+  "author": "tsmr <code@tsmr.eu>",
   "scripts": {
     "start": "tsc --watch",
     "dev": "concurrently \"tsc --watch\" \"nodemon build/main.js\"",
-    "build": "typescript"
+    "el": "electron build/main.js",
+    "build": "tsc",
+    "buildwin": "tsc && electron-builder",
+    "buildlinux": "tsc && electron-builder --linux"
+  },
+  "build": {
+    "appId": "bockstacksync",
+    "productName": "BookStack-Sync",
+    "copyright": "Copyright (c) 2020 Tobias Müller",
+    "icon": "./build/icons/logo.png",
+    "buildVersion": "0.0.1",
+    "win": {
+      "target": "NSIS",
+      "icon": "./build/icons/logo.png"
+    },
+    "linux": {
+      "executableName": "BookStack-Sync",
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "./build/icons/logo.png",
+      "synopsis": "BookStack-Synchronisierung für Offline-Unterstützung",
+      "category": "Office",
+      "desktop": {
+        "Terminal": "false",
+        "Type": "Application",
+        "Categories": "Office"
+      }
+    },
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "nsis": {
+      "artifactName": "${productName}Setup.${ext}",
+      "uninstallDisplayName": "${productName}"
+    }
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/otsmr/bookstack-sync.git"
   },
-  "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/otsmr/bookstack-sync/issues"
   },
   "homepage": "https://github.com/otsmr/bookstack-sync#readme",
   "devDependencies": {
+    "@types/auto-launch": "^5.0.1",
+    "@types/nconf": "^0.10.0",
     "@types/node": "^14.6.2",
     "concurrently": "^5.3.0",
+    "electron": "^10.1.0",
+    "electron-builder": "^22.8.0",
     "nodemon": "^2.0.4",
     "typescript": "^4.0.2"
   },
   "dependencies": {
+    "adm-zip": "^0.4.16",
+    "auto-launch": "^5.0.5",
     "moment": "^2.27.0",
-    "mysql2": "^2.1.0"
+    "mysql2": "^2.1.0",
+    "nconf": "^0.10.0",
+    "open": "^7.2.1"
   }
 }
