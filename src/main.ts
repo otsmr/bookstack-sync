@@ -6,6 +6,8 @@ import { initTrayIcon, updateTrayIcon } from "./electron"
 import config from "./config"
 
 
+if (!app.requestSingleInstanceLock()) app.quit();
+
 
 initTrayIcon();
 
