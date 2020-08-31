@@ -5,7 +5,9 @@
     "allowJs": true,
     "outDir": "./build",
     "moduleResolution": "node",
-    "sourceMap": true
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   },
   "files": [
     "./src/main.ts"
