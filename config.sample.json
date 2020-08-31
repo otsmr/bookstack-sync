@@ -1,0 +1,15 @@
+{
+    "authFtpServer": {
+        "user": "",
+        "pass": "",
+        "host": "",
+        "port": ""
+    },
+    "authMysqlServer": {
+        "user": "",
+        "pass": "",
+        "host": "",
+        "port": "",
+        "database": ""
+    }
+}
