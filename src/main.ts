@@ -8,7 +8,6 @@ import config from "./config"
 
 if (!app.requestSingleInstanceLock()) app.quit();
 
-
 initTrayIcon();
 
 const exe = app.getPath("exe");

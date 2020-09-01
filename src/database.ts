@@ -7,6 +7,7 @@ import mysql from "mysql2/promise";
 import Zip from "adm-zip";
 
 import config from "./config"
+import { syncProblem } from "./dialogs";
 
 
 function zipFile (filepath: string) {
@@ -78,6 +79,7 @@ async function compareMysqlServers () {
 
             if (table_newerIn === "equal") continue;
             if (newerIn !== "equal" && table_newerIn !== newerIn) {
+                console.log("ERROR IN", linfo.tableName, table_newerIn, linfo.lastUpdate, sinfo.lastUpdate);
                 return "error";
             }
 
@@ -204,26 +206,38 @@ function updateDatabase (auth, restoreFile) {
 
 }
 
+async function update (newerIn: string, call: {(status: string): void}) {
+
+    let serverIsOlder = (newerIn === "local") ? true : false;
+
+    if (serverIsOlder) call("sync-up");
+    else call("sync-down");
+
+    console.log((serverIsOlder) ? "Server" : "Lokal", "wird aktualisiert.");
+
+    let downloadedFile = await createBackup((serverIsOlder) ? config.get("authMysqlLocal") : config.get("authMysqlServer"));
+
+    updateDatabase((serverIsOlder) ? config.get("authMysqlServer") : config.get("authMysqlLocal"), downloadedFile);
+
+}
+
 export default async function (call: {(status: string): void}) {
 
     try {
     
         const newerIn = await compareMysqlServers();
 
-        if (newerIn === "error") throw new Error("Datenbanken koennen nicht syncronisiert werden.");
+        if (newerIn === "error") {
+            call("sync-problem");
+            syncProblem((version) => {
+                update(version, call);
+            });
+            return;
+        }
         else if (newerIn === "equal") console.log("Datenbanken sind aktuell");
         else {
 
-            let serverIsOlder = (newerIn === "local") ? true : false;
-
-            if (serverIsOlder) call("sync-up");
-            else call("sync-down");
-
-            console.log((serverIsOlder) ? "Server" : "Lokal", "wird aktualisiert.");
-
-            let downloadedFile = await createBackup((serverIsOlder) ? config.get("authMysqlLocal") : config.get("authMysqlServer"));
-
-            updateDatabase((serverIsOlder) ? config.get("authMysqlServer") : config.get("authMysqlLocal"), downloadedFile);
+            update(newerIn, call);
 
         }
 

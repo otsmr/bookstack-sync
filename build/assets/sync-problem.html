@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitte auswählen</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 10px 20px;
+            color: #eee;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            border: 2px solid #206ea7;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+        h1 {
+            font-size: 22px;
+        }
+        .buttons {
+            display: flex;
+        }
+        button {
+            font-size: 19px;
+            display: block;
+            padding: 10px 20px;
+            margin: 10px auto;
+            cursor: pointer;
+            outline: none;
+            border: none;
+            background: #eee;
+            
+        }
+        button:active {
+            transform: scale(.98);
+        }
+    </style>
+
+
+</head>
+<body>
+    <h1>Problem bei der Syncronisierung</h1>
+    <p><b>BookStack-Sync</b> kann nicht feststellen, welche Datenbank-Version neuer ist.</p>
+    <p>Bitte wählen Sie daher manuell die neuste Version aus</p>
+    <div class="buttons">
+        <button onclick="send('local')">lokale Version</button>
+        <button onclick="send('server')">Server-Version</button>
+    </div>
+    
+    <script>
+
+    const ipcRenderer = require('electron').ipcRenderer;
+
+    function send (version) {
+        ipcRenderer.send("selected", version)
+    }
+
+    </script>
+    
+</body>
+</html>
