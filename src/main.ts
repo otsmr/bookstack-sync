@@ -2,6 +2,7 @@ import { app } from "electron"
 import AutoLaunch from "auto-launch"
 
 import syncdb from "./database"
+import syncfiles from "./files"
 import { initTrayIcon, updateTrayIcon } from "./electron"
 import config from "./config"
 
@@ -26,22 +27,19 @@ if (!exe.endsWith("electron.exe")) {
 // -------------------------------------
 // Syncronisation wird gestartet
 
-syncdb((status) => {
-    updateTrayIcon(status);
-});
+syncfiles(updateTrayIcon);
+// syncdb(updateTrayIcon);
 
-setInterval(() => {
+// setInterval(() => {
 
-    console.log("CHECK");
+//     console.log("CHECK");
 
-    syncdb((status) => {
-        updateTrayIcon(status);
-    });
+//     syncdb((status) => {
+//         updateTrayIcon(status);
+//     });
     
-}, config.get("syncIntervallInMinutes") * 1000 * 60);
+// }, config.get("syncIntervallInMinutes") * 1000 * 60);
 
 
 
 
-// ftp://bookstack/storage/uploads/ -> ./data/bookstack/www/
-// ftp://bookstack/public/uploads/ -> ./data/bookstack/www/uploads
