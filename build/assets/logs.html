@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logs - BookStack-Sync</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+        }
+        header {
+            height: 50px;
+            width: 100%;
+            background: #181818;
+            display: flex;
+            align-items: center;
+            padding: 20px;
+        }
+        pre {
+            height: calc(100vh - 50px);
+            overflow: auto;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            padding: 20px;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    
+    <header>
+        <select>
+            <option value="all" selected>Alle</option>
+            <option value="error">Nur Fehler</option>
+            <option value="warning">Nur Warnungen</option>
+            <option value="info">Nur Infos</option>
+        </select>
+    </header>
+    <pre id="log">
+
+    </pre>
+
+    <script>
+
+        const logEl = document.querySelector("#log");
+
+        const ipcRenderer = require('electron').ipcRenderer;
+        ipcRenderer.on('logdata', function (event, logs) {
+            logEl.innerHTML = logs;
+            logEl.scrollTop = logEl.scrollHeight;
+        });
+
+    </script>
+</body>
+</html>

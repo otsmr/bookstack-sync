@@ -6,7 +6,9 @@ import syncfiles from "./files"
 import { initTrayIcon, updateTrayIcon } from "./electron"
 import config from "./config"
 
+import log from "./log"
 
+log.info("App gestartet");
 if (!app.requestSingleInstanceLock()) app.quit();
 
 initTrayIcon();

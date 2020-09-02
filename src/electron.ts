@@ -4,6 +4,7 @@ import open from "open";
 
 import config from "./config";
 import syncdb from "./database"
+import log, { displayLog } from "./log"
 
 let tray: Tray | null = null;
 
@@ -41,6 +42,7 @@ export function initTrayIcon () {
             {
                 label: 'Jetzt syncronisieren',
                 click: () => {
+                    log.info(`Synchronisierung manuell gestartet`);
                     updateTrayIcon("sync");
                     syncdb((status) => {
                         updateTrayIcon(status);
@@ -48,9 +50,45 @@ export function initTrayIcon () {
                 }
             },
             {
+                label: 'BookStack öffnen',
+                submenu: [
+                    {
+                        label: 'Online',
+                        click: () => {
+                            open(config.get("links:server"));
+                        }
+                    },
+                    {
+                        label: 'Lokal',
+                        click: () => {
+                            open(config.get("links:local"));
+                        }
+                    },
+                ]
+            },
+            {
                 label: 'Einstellungen öffnen',
                 click: () => {
                     open(config.configPath);
+                }
+            },
+            { type: 'separator' },
+            {
+                label: 'Logs anzeigen',
+                click: () => {
+                    displayLog();
+                }
+            },
+            {
+                label: 'Problem melden',
+                click: () => {
+                    open("https://github.com/otsmr/bookstack-sync/issues");
+                }
+            },
+            {
+                label: 'Hilfe',
+                click: () => {
+                    open("https://github.com/otsmr/bookstack-sync");
                 }
             },
             {

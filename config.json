@@ -15,6 +15,7 @@
     "syncIntervallInMinutes": 5,
     "localPath": "",
     "backupPath": "data/backup/",
+    "localBookStackDockerPath": "data/bookstack/",
     "authMysqlClient": {
         "user": "root",
         "pass": "root",

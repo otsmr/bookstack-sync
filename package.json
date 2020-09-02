@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "BookStack-Synchronisierung für Offline-Unterstützung",
   "main": "build/main.js",
-  "author": "tsmr <code@tsmr.eu>",
+  "author": "Tobias Müller <code@tsmr.eu>",
   "scripts": {
     "start": "tsc --watch",
     "dev": "concurrently \"tsc --watch\" \"nodemon build/main.js\"",
