@@ -26,15 +26,15 @@ Das offizielle Anleitung zur Installation von Docker ist [hier](https://docs.doc
 `sudo apt install mariadb-client-10.3`
 
 #### Windows
-MariaDB herunterladen von [https://mariadb.org/download/](https://dev.mysql.com/downloads/file/?id=496597) und installieren.
+MariaDB von  [https://mariadb.org/download/](https://dev.mysql.com/downloads/file/?id=496597) herunterladen und installieren.
 
 ## Docker Container starten
 `docker-compose.yml` herunterladen und `docker-compose up -d` im Terminal ausführen.
 
 ## BookStack-Sync installieren und einrichten
-BookStack-Sync selbst ist mit dem Setup auf der [Release-Seite] (https://github.com/otsmr/bookstack-sync/releases) schnell installiert.  
+BookStack-Sync selbst ist mit dem Setup auf der [Release-Seite](https://github.com/otsmr/bookstack-sync/releases) schnell installiert.  
 
-Nach der Installation die Einstellungen öffnen und die Zugangsdaten für die Datenbank und den FTP-Server der  Online-Version von BookStack eingeben.
+Nach der Installation die Einstellungen öffnen und die Zugangsdaten für die Datenbank und den FTP-Server der Online-Version von BookStack eingeben.
 
 
 # Copyright und Lizenz
