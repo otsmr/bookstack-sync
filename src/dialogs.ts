@@ -29,8 +29,12 @@ export function syncProblem (call: {(version: string)}) {
         })
 
         ipcMain.on("selected", (event, version) => {
-            win.hide();
-            win.destroy();
+            try {
+                win.hide();
+                win.destroy();
+            } catch (error) {
+                
+            }
             setTimeout(() => {
                 call(version);
             }, 10);
