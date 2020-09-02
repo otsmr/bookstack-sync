@@ -5,11 +5,8 @@
 [Hier](https://www.bookstackapp.com/) geht es zur offizielen Seite von BookStack.
 
 ## Ziel
-BookStack-Sync bietet die Möglichkeit, BookStack mit einer lokalen Version zu synchronisieren. Wenn keine Internetverbindung besteht, ist es somit trotzdem möglich weiter mit BookStack zu arbeiten.
-
-
-## Bedienung
-Einmal gestartet, läuft BookStack-Sync im Hintergrund und synchronisiert nach einem Intervall, der in den Einstellungen frei definiert werden kann.   
+Mit BookStack-Sync ist es möglich, auch ohne Internetverbindung weiter mit BookStack zu arbeiten.  
+Einmal gestartet, läuft BookStack-Sync im Hintergrund und synchronisiert nach einem Intervall, der in den Einstellungen frei definiert werden kann.
 Eine Synchronisation kann auch manuell mit einem Rechtsklick gestartet werden.  
 
 ![Tray-Menü](screenshots/tray-menu.png)
