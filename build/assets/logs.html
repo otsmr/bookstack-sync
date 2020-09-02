@@ -29,17 +29,31 @@
             padding: 20px;
             color: #fff;
         }
+
+        button {
+            margin: 0 0 0 auto;
+        }
+
+        .check {
+            color: #fff;
+            padding-left: 20px;
+        }
     </style>
 </head>
 <body>
     
     <header>
-        <select>
-            <option value="all" selected>Alle</option>
-            <option value="error">Nur Fehler</option>
-            <option value="warning">Nur Warnungen</option>
-            <option value="info">Nur Infos</option>
+        <select onchange="updateFilter(this)">
+            <option value="" selected>Alle</option>
+            <option value="ERROR">Nur Fehler</option>
+            <option value="WARNING">Nur Warnungen</option>
+            <option value="INFO">Nur Infos</option>
         </select>
+        <div class="check">
+            <input checked type="checkbox" id="autoscroll" onchange="changeAutoScroll(this)" />
+            <label for="autoscroll">Autoscroll</label>
+        </div>
+        <button onclick="ipcRenderer.send('clearlog')">Log leeren</button>
     </header>
     <pre id="log">
 
@@ -47,12 +61,34 @@
 
     <script>
 
+        let filter = "";
+        let autoscroll = true;
+        let lastLogs = [];
+
+        function changeAutoScroll (input) {
+            autoscroll = input.checked;
+            console.log(autoscroll);
+        }
+        function getFiltered () {
+            return lastLogs.split("\n").filter(e => e.indexOf(filter) === 22 || filter === "").join("\n");
+        }
+        function updateLog () {
+            logEl.innerHTML = getFiltered();
+            if (autoscroll) logEl.scrollTop = logEl.scrollHeight;
+        }
+        function updateFilter(target) {
+            console.log(target);
+            filter = target.value;
+            console.log(filter);
+            updateLog();
+        }
+
         const logEl = document.querySelector("#log");
 
         const ipcRenderer = require('electron').ipcRenderer;
         ipcRenderer.on('logdata', function (event, logs) {
-            logEl.innerHTML = logs;
-            logEl.scrollTop = logEl.scrollHeight;
+            lastLogs = logs;
+            updateLog();
         });
 
     </script>

@@ -1,7 +1,7 @@
 
 import { app, BrowserWindow, Menu, ipcMain } from "electron"
 import { normalize, join } from "path";
-import { mkdirSync, writeFileSync, existsSync, appendFileSync, readFileSync, watchFile } from "fs";
+import { mkdirSync, writeFileSync, existsSync, appendFileSync, readFileSync, watchFile, unwatchFile } from "fs";
 import moment from "moment";
 
 const appdata = join(normalize(app.getPath("appData")), "bookstack-sync");
@@ -12,9 +12,9 @@ if (!existsSync(logPath)) writeFileSync(logPath, "");
 
 const writeToFile = (msg: string) => {
 
+    console.log(msg);
 
-
-    const time = moment().format("DD.MM.YY HH.mm.ss");
+    const time = moment().format("DD.MM.YYYY HH:mm:ss");
 
     appendFileSync(logPath, `[${time}] ${msg}\n`);
 
@@ -26,6 +26,9 @@ export default {
     },
     error: (msg: string) => {
         writeToFile(`ERROR > ${msg}`);
+    },
+    warning: (msg: string) => {
+        writeToFile(`WARNING > ${msg}`);
     }
 }
 
@@ -36,6 +39,7 @@ export function displayLog () {
     if (win !== null) {
         return win.show();
     }
+
     app.whenReady().then(() => {
         
         win = new BrowserWindow({
@@ -55,27 +59,28 @@ export function displayLog () {
 
         win.setMenu(menu);
 
+        function updateLog () {
+            if (win) win.webContents.send('logdata', readFileSync(logPath).toString());
+        }
+
         win.on("ready-to-show", () => {
             win.show();
 
-            function send () {
-                win.webContents.send('logdata', readFileSync(logPath).toString());
-            }
-
-            watchFile(logPath, send)
-            send();
-
+            watchFile(logPath, updateLog)
+            updateLog();
         })
+        
+        // win.webContents.openDevTools();
 
-        win.on("close", (event) => {
-            event.preventDefault();
-            win.hide();
+        win.on("closed", () => {
+            win = null;
+            unwatchFile(logPath);
+        });
+
+        ipcMain.on("clearlog", (event, version) => {
+            writeFileSync(logPath, "");
+            updateLog();
         })
-
-        // ipcMain.on("selected", (event, version) => {
-        //     call(version);
-        //     win.close();
-        // })
     
         win.loadURL(`file://${__dirname}/assets/logs.html`)
 

@@ -1,7 +1,10 @@
 // Copyright (c) Jamison Dance - https://github.com/jergason/recursive-readdir
 
-import * as  fs from "fs";
-import * as  p from "path";
+import * as p from "path";
+import config from "./config";
+import { unlinkSync } from "fs";
+import * as fs from "fs";
+import { normalize } from "path";
 
 export default function readdir( path: string, callback?: {
     (err: NodeJS.ErrnoException, filelist?: {filepath: string, size: number, modifiedAt: string}[])
@@ -53,6 +56,32 @@ export default function readdir( path: string, callback?: {
             });
 
         });
+
+    });
+
+}
+
+export function removeOldFiles () {
+
+    console.log(config.get("backupPath"), config.get("backupMaxSavedFiles"));
+
+    readdir(config.get("backupPath"), (err, fileList) => {
+
+        while (1) {
+
+            console.log(fileList.length);
+
+            if (fileList.length > config.get("backupMaxSavedFiles")) {
+                fileList = fileList.slice(0, config.get("backupMaxSavedFiles") - fileList.length);
+                for (const file of fileList) {
+                    unlinkSync(normalize(file.filepath));
+                }
+
+            } else {
+                break;
+            }
+
+        }
 
     });
 

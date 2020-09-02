@@ -6,6 +6,7 @@ import { join, dirname } from "path";
 import { mkdirSync } from "fs";
  
 import log from "./log"
+import { updateTrayIcon } from "./electron";
 
     
 const auth = config.get("authFtpServer");
@@ -76,17 +77,14 @@ async function downloadFilesFromServer (client: any, files: {from: string, to: s
 
 }
  
-export default async function (updateTrayIcon: {(status: string)}) {
+export default async function (ready: {(): void}) {
 
     const client = new ftp.Client()
     client.ftp.verbose = false;
     
     try {
     
-        await client.access({
-            ...auth,
-            secure: true
-        });
+        await client.access({ ...auth, secure: true });
 
         let localPath = join(config.get("localBookStackDockerPath"), "www").replace(/\\/g, "/");
 
@@ -183,20 +181,11 @@ export default async function (updateTrayIcon: {(status: string)}) {
         }
 
         compareFolders(0);
-        
-
-        // let fileList = await client.list("/public/uploads");
-        // console.log(fileList.map(e => `${e.name} - ${e.size} - ${e.rawModifiedAt}`))
     
     }
     catch(err) {
         updateTrayIcon("sync-problem");
-        console.log(err)
+        log.error("Dateisync: " + err.toString());
     }
 
-} 
-
-// ftp://bookstack/storage/uploads/ -> ./data/bookstack/www/files, images
-// ftp://bookstack/public/uploads/ -> ./data/bookstack/www/uploads
-
-// ignore: .gitignore, .htaccess
+}

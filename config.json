@@ -1,26 +1,31 @@
 {
     "authFtpServer": {
         "user": "",
-        "pass": "",
+        "password": "",
         "host": "",
-        "port": ""
+        "port": 21
     },
     "authMysqlServer": {
         "user": "",
-        "pass": "",
+        "password": "",
         "host": "",
-        "port": "",
+        "port": 3306,
         "database": ""
     },
-    "syncIntervallInMinutes": 5,
-    "localPath": "",
-    "backupPath": "data/backup/",
+    "autoStart": true,
+    "syncIntervallInMinutes": 2,
+    "backupMaxSavedFiles": 100,
+    "links": {
+        "local": "http://localhost:8080",
+        "server": "https://odocs.de"
+    },
     "localBookStackDockerPath": "data/bookstack/",
-    "authMysqlClient": {
+    "backupPath": "data/backup/",
+    "authMysqlLocal": {
         "user": "root",
-        "pass": "root",
+        "password": "root",
         "host": "localhost",
-        "port": "3306",
+        "port": "3307",
         "database": "bookstack"
     },
     "checktables": {
@@ -51,6 +56,5 @@
             "users",
             "user_invites"
         ]
-    },
-    "autoStart": true
+    }
 }

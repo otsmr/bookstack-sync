@@ -29,8 +29,11 @@ export function syncProblem (call: {(version: string)}) {
         })
 
         ipcMain.on("selected", (event, version) => {
-            call(version);
-            win.close();
+            win.hide();
+            win.destroy();
+            setTimeout(() => {
+                call(version);
+            }, 10);
         })
     
         win.loadURL(`file://${__dirname}/assets/sync-problem.html`)

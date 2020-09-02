@@ -6,6 +6,8 @@ import config from "./config";
 import syncdb from "./database"
 import log, { displayLog } from "./log"
 
+import { syncall } from "./main"
+
 let tray: Tray | null = null;
 
 function getPath (icon: string) {
@@ -44,9 +46,7 @@ export function initTrayIcon () {
                 click: () => {
                     log.info(`Synchronisierung manuell gestartet`);
                     updateTrayIcon("sync");
-                    syncdb((status) => {
-                        updateTrayIcon(status);
-                    });
+                    syncall();
                 }
             },
             {
