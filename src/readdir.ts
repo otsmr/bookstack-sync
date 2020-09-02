@@ -63,24 +63,28 @@ export default function readdir( path: string, callback?: {
 
 export function removeOldFiles () {
 
-    console.log(config.get("backupPath"), config.get("backupMaxSavedFiles"));
+    fs.mkdirSync(config.get("backupPath"), { recursive: true })
 
     readdir(config.get("backupPath"), (err, fileList) => {
 
-        while (1) {
-
-            console.log(fileList.length);
-
-            if (fileList.length > config.get("backupMaxSavedFiles")) {
-                fileList = fileList.slice(0, config.get("backupMaxSavedFiles") - fileList.length);
-                for (const file of fileList) {
-                    unlinkSync(normalize(file.filepath));
+        try {
+            
+            for (let i = 0;i<10;i++) {
+    
+                if (fileList.length > config.get("backupMaxSavedFiles")) {
+                    fileList = fileList.slice(0, config.get("backupMaxSavedFiles") - fileList.length);
+                    for (const file of fileList) {
+                        unlinkSync(normalize(file.filepath));
+                    }
+    
+                } else {
+                    break;
                 }
-
-            } else {
-                break;
+    
             }
 
+        } catch (error) {
+            
         }
 
     });
