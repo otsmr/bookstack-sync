@@ -4,6 +4,7 @@ const os = require("os");
 // LINUX
 if (os.platform() === "linux") {
 
+    // install.sh !! Berechtigung für den Ordner /optbookstack-sync/data
     // rm dist/*.AppImage
     // rm release/linux/*.AppImage
     // npm run buildlinux
