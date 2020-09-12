@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+
+[Desktop Entry]
+Version=1.0
+Type=Application
+Categories=Filesystem;
+Terminal=false
+Comment=Sync for BookStack
+Exec=bash -c "/opt/bookstack-sync/BookStack-Sync.AppImage"
+Name=BookStack-Sync
+Icon=/opt/bookstack-sync/logo.png

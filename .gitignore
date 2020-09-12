@@ -5,3 +5,8 @@ build/data/**
 dist/
 data/
 package-lock.json
+
+*.AppImage
+
+release/linux/docker-compose.yml
+release/linux/logo.png
