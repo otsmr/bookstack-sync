@@ -8,10 +8,10 @@ export function syncProblem (call: {(version: string)}) {
         const mainScreen = screen.getPrimaryDisplay();
         
         const win = new BrowserWindow({
-            y: mainScreen.workAreaSize.height - 250 - 60,
+            y: mainScreen.workAreaSize.height - 280 - 60,
             x: mainScreen.workAreaSize.width - 450 - 60,
             width: 450,
-            height: 250,
+            height: 280,
             frame: false,
             resizable: false,
             title: "BookStack-Sync",
